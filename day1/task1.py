@@ -12,7 +12,7 @@ if __name__ == '__main__':
 
     total_distance: int = 0
 
-    for index, value_of_column1 in enumerate(values_of_column1):
-        total_distance += (abs(value_of_column1 - values_of_column2[index]))
+    for val_of_col1, val_of_col2 in zip(values_of_column1, values_of_column2):
+        total_distance += abs(val_of_col1 - val_of_col2)
 
     print(total_distance)
