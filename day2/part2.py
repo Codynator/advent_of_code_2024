@@ -1,5 +1,5 @@
 def lines_generator():
-    for line in open("./input1.txt", "r"):
+    for line in open("./input.txt", "r"):
         yield line
 
 
