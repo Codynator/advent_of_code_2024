@@ -1,3 +1,6 @@
+from timeit import default_timer
+
+
 def get_parsed_order(_line: str) -> tuple[int, int]:
     start_order: int = int(_line.split("|")[0])
     end_order: int = int(_line.split("|")[1])
@@ -32,7 +35,6 @@ def are_pages_ordered(_pages: tuple[int, ...] | list[int], _required_orders) -> 
     return _pages_in_right_order
 
 
-
 def get_corrected_line(_pages: tuple[int, ...], _required_orders: list[tuple]) -> tuple[int, ...]:
     _pages = list(_pages)
 
@@ -48,19 +50,22 @@ def get_corrected_line(_pages: tuple[int, ...], _required_orders: list[tuple]) -
 
 
 if __name__ == '__main__':
+    start_time = default_timer()
+
     with open("./input.txt", "r") as file:
         all_lines: list[str] = file.readlines()
+
+    divider_index: int = all_lines.index("\n")
 
     all_orders: list[tuple] = []
     all_pages_lines: list[tuple] = []
     result: int = 0
 
-    for line in all_lines:
-        if "|" in line:
-            all_orders.append(get_parsed_order(line))
+    for order in all_lines[0:divider_index]:
+        all_orders.append(get_parsed_order(order))
 
-        elif "," in line:
-            all_pages_lines.append(get_parsed_line(line))
+    for pages_line in all_lines[divider_index + 1: len(all_lines)]:
+        all_pages_lines.append(get_parsed_line(pages_line))
 
 
     for pages_line in all_pages_lines:
@@ -76,6 +81,7 @@ if __name__ == '__main__':
             continue
 
         corrected_pages_line: tuple[int, ...] = get_corrected_line(pages_line, required_orders)
-        result += corrected_pages_line[(len(corrected_pages_line) - 1) // 2]
+        result += corrected_pages_line[len(corrected_pages_line) // 2]
 
     print(result)
+    print(f"TIME: {default_timer() - start_time}")
